@@ -15,6 +15,9 @@ public class Main {
         List<Song> playList1 = new LinkedList<>();
         System.out.println(album2.addSongToPlayListFromAlbum("2 Much",playList1));
         System.out.println(album2.addSongToPlayListFromAlbum("As I Am",playList1));
+        System.out.println(album2.addSongToPlayListFromAlbum("Deserve You",playList1));
+        System.out.println(album1.addSongToPlayListFromAlbum("Pass Dat",playList1));
+        System.out.println(album1.addSongToPlayListFromAlbum("Impatient",playList1));
         System.out.println(album1.addSongToPlayListFromAlbum(1,playList1));
         play(playList1);
     }
@@ -26,14 +29,17 @@ public class Main {
             return;
         }
         boolean isNext;
+        boolean isSongChanged;
         System.out.println("Currently playing: ");
         System.out.println(itr.next());
         isNext = true;
+        isSongChanged = true;
         Scanner sc = new Scanner(System.in);
         printMenu();
         while(true){
             System.out.println("Enter your choice: ");
             int choice = sc.nextInt();
+
             switch (choice){
 
                 case 1:
@@ -59,8 +65,29 @@ public class Main {
                     isNext = false;
                     break;
                 case 3:
+                    if(itr.hasPrevious() && itr.hasNext() && isNext){
+                        System.out.println(itr.previous());
+                        itr.next();
+                    }
+                    else if(itr.hasPrevious() && itr.hasNext() && !isNext){
+                        System.out.println(itr.next());
+                        itr.previous();
+                    }
+                    else if(!itr.hasPrevious() && itr.hasNext()){
+                        System.out.println(itr.next());
+                        itr.previous();
+                    }
+                    else{
+                        System.out.println(itr.previous());
+                        itr.next();
+                    }
                     break;
                 case 4:
+                    if(itr.hasNext()){
+                        itr.remove();
+                        itr.next();
+                    }
+                    System.out.println("Song has removed from your PlayList");
                     break;
                 case 5:
                     printAllSongs(playList);
@@ -70,6 +97,9 @@ public class Main {
                     break;
                 case 7:  // exit
                     return;
+                default:
+                    System.out.println("Invalid input");
+                    break;
             }
         }
     }
